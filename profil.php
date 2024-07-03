@@ -28,7 +28,7 @@
     function onClick($result)
     {
     if (mysqli_num_rows($result) > 0) {
-        header("Location: ./index.php");
+        header("Location: ./login.php");
     } else {
         header("Location: ./homepage.php");
     }
@@ -56,6 +56,8 @@
     }
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +69,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
         html, body {
             font-family: 'Poppins', sans-serif;
         }
@@ -101,7 +103,7 @@
                         <i class="bi bi-person-circle" style="color: white; font-size: large;"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="./profil.php">Profile</a></li>
+                        <li><a class="dropdown-item" href="profil.php">Profile</a></li>
                         <li><a class="dropdown-item" href="./config/logout.php">Logout</a></li>
                     </ul>
                 </div>
@@ -134,6 +136,10 @@
                         <div class="col-sm-10 w-100">
                             <input type="password" class="form-control text-muted" id="passwordbaru" name="password" placeholder="Kata Sandi">
                         </div>
+                        <!-- <label for="katasandi" class="form-label">Ubah Kata Sandi</label>
+                        <input type="password" class="form-control" id="katasandilama" placeholder="Masukan Kata Sandi Lama">
+                        <br>
+                        <input type="password" class="form-control" id="katasandibaru" placeholder="Masukan Kata Sandi Baru"> -->
                         <a href="" class="btn btn-primary d-grid mt-4" type = "submit">Simpan Perubahan</a>
                     </form>
                 </div>

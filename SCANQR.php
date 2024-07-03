@@ -17,8 +17,11 @@ if ($protocol === 'http') {
     // session_start();
 
     $nipp = $_SESSION["NIPP"];
+    $nama = $_SESSION["nama"];
+    $dinasan = $_SESSION["dinasan"];
+    // $tanggal_ka = $_SESSION["tanggal_ka"];
     //Query untuk mengambil data dari tabel users
-    $sql = "SELECT nama FROM user";
+    $sql = "SELECT nama, dinasan, tanggal_ka FROM user";
     $result = mysqli_query($conn, $sql);
 
     //Periksa apakah data ditemukan
@@ -30,14 +33,40 @@ if ($protocol === 'http') {
         echo "Tidak ada data user.";
     }
 
-    // Tutup koneksi database
-    
-
-    
+    // Ambil data nama KA dari database
     if (isset($_SESSION["login"])) {
-    $login_as = $_SESSION["NIPP"];
-    $result_login = mysqli_query($conn, "SELECT nama FROM user WHERE NIPP = '$login_as'");
-    $data_login = mysqli_fetch_assoc($result_login);
+        $login_as = $_SESSION["NIPP"];
+        $result_login = mysqli_query($conn, "SELECT nama, dinasan, namaka, tanggal_ka FROM user WHERE NIPP = '$login_as'");
+        $data_login = mysqli_fetch_assoc($result_login);
+
+        $_SESSION["nama"] = $data_login["nama"];
+        $_SESSION["dinasan"] = $data_login["dinasan"];
+        $_SESSION["namaka"] = $data_login["namaka"];
+        $_SESSION["tanggal_ka"] = $data_login["tanggal_ka"];
+    }
+
+    if (isset($_SESSION["login"]) && isset($_SESSION["NIPP"])) {
+        $login_as = $_SESSION["NIPP"];
+    
+        // Pastikan koneksi terbuka
+        if ($conn) {
+            $result_login = mysqli_query($conn, "SELECT stanformasi FROM pilih_jadwal WHERE NIPP = '$login_as'");
+    
+            // Periksa hasil kueri
+            if ($result_login) {
+                $data_login = mysqli_fetch_assoc($result_login);
+    
+                if ($data_login !== null && isset($data_login["stanformasi"])) {
+                    $_SESSION["stanformasi"] = $data_login["stanformasi"];
+                } else {
+                    // Penanganan jika data kosong atau 'stanformasi' tidak ada
+                }
+            } else {
+                // Penanganan jika terjadi kesalahan pada kueri
+            }
+        } else {
+            // Penanganan jika koneksi gagal
+    }
     }
 
     function onClick($result)
@@ -87,10 +116,6 @@ if ($protocol === 'http') {
     </style>
 </head>
 <body>
-    <!-- // session_start();
-    // if (isset($_POST['stanformasi'])) {
-    //     $_SESSION['stanformasi'] = $_POST['stanformasi'];
-    // } -->
     <header>
         <nav class="navbar navbar-expand-md fixed-top" style="background-color: #252271;">
             <div class="container-fluid">
@@ -111,6 +136,17 @@ if ($protocol === 'http') {
         <div class="b-example-divider-header"></div>
     </header>
     <main>
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="overview-wrap">
+                            <h2 class="title-1" style="text-align: center;">Selamat Datang <?php echo $_SESSION['stanformasi']; ?>, Silahkan Absen</h2>
+                        </div>
+                    </div>
+                </div>
+
         <div class="container">
             <div class="card shadow bg-body-tertiary rounded">
                 <div class="card-body">
@@ -133,47 +169,68 @@ if ($protocol === 'http') {
                         ";
                     }
                     ?>
-                    <form action="./config/insert.php" method="POST" id="form" class="form-horizontal">
-                        <label for="nosarana" text-align:center>SCAN QRCODE</label>
-                        <input type="hidden" id="nosarana" name="nosarana" readonly placeholder="Enter some text" class="form-control">
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-    </main>
-    <script>
-    function openCamera() {
-        let scanner = new Instascan.Scanner({ 
-            video: document.getElementById('preview'),
-            mirror: false,
-        });
-        Instascan.Camera.getCameras().then(function (cameras) {
-            let selectedCamera = cameras.length > 0 ? cameras[cameras.length - 1] : null;
-            if (cameras.length > 0) {
-                for (let i = 0; i < cameras.length; i++) {
-                    if (cameras[i].facing === 'environment') {
-                        selectedCamera = cameras[i];
-                        break;
+
+                <form action="./config/insert.php" method="POST" id="form" class="form-horizontal">
+                    <!-- <label for="nosarana" text-align:center>SCAN QRCODE</label> -->
+                    <input type="hidden" id="nosarana" name="nosarana" readonly placeholder="Enter some text" class="form-control">
+                    <input type="hidden" readonly="" class="form-control" name="NIPP" autocomplete="off" size="25px" maxlength="25px" value="<?php echo $_SESSION['NIPP'];?>">
+                    <input type="hidden" class="form-control" name="nama" autocomplete="off" readonly="" value="<?php echo $_SESSION['nama']; ?>">
+                    <input type="hidden" class="form-control" name="dinasan" autocomplete="off" readonly="" value="<?php echo $_SESSION['dinasan']; ?>">
+                    <input type="hidden" class="form-control" name="namaka" autocomplete="off" readonly="" value="<?php echo $_SESSION['namaka']; ?>">
+                    <input type="hidden" class="form-control" name="stanformasi" autocomplete="off" readonly="" value="<?php echo $_SESSION['stanformasi']; ?>">
+                </form>
+
+                <script>
+                    function submitForm() {
+                        document.getElementById('form').submit();
                     }
-                }
-            }
-            if (selectedCamera) {
-                scanner.start(selectedCamera);
-            } else {
-                alert('No back camera found. Using the default camera.');
-                scanner.start(cameras[0]);
-            }
-        }).catch(function (e) {
-            console.error(e);
-            alert('Error accessing camera. Please try again.');
-        });
-        scanner.addListener('scan', function(content) {
-            document.getElementById('nosarana').value = content;
-            document.getElementById('form').submit();
-        });
-    }
-        openCamera();
-    </script>
+
+                    function openCamera() {
+                        let scanner = new Instascan.Scanner({ 
+                            video: document.getElementById('preview'),
+                            mirror: false,
+                        });
+                        Instascan.Camera.getCameras().then(function (cameras) {
+                            let selectedCamera = cameras.length > 0 ? cameras[cameras.length - 1] : null;
+                            if (cameras.length > 0) {
+                                for (let i = 0; i < cameras.length; i++) {
+                                    if (cameras[i].facing === 'environment') {
+                                        selectedCamera = cameras[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            if (selectedCamera) {
+                                scanner.start(selectedCamera);
+                            } else {
+                                alert('No back camera found. Using the default camera.');
+                                scanner.start(cameras[0]);
+                            }
+                        }).catch(function (e) {
+                            console.error(e);
+                            alert('Error accessing camera. Please try again.');
+                        });
+                        scanner.addListener('scan', function(content) {
+                            document.getElementById('nosarana').value = content;
+                            document.getElementById('form').submit();
+                        });
+                    }
+                    openCamera();
+                </script>
+
+                <script>
+                        // Fungsi untuk me-reload halaman sekali setelah halaman selesai dimuat
+                        function autoReloadOnce() {
+                            if (!localStorage.getItem('reload')) {
+                                localStorage.setItem('reload', 'true');
+                                location.reload();
+                            } else {
+                                localStorage.removeItem('reload');
+                            }
+                        }
+                        
+                        // Panggil fungsi autoReloadOnce saat halaman selesai dimuat
+                        window.onload = autoReloadOnce;
+                </script>
 </body>
 </html>

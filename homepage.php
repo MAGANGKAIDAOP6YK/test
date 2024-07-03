@@ -18,7 +18,10 @@
         echo "Tidak ada data user.";
     }
 
-    // Tutup koneksi database    
+    // Tutup koneksi database
+    
+
+    
     if (isset($_SESSION["login"])) {
     $login_as = $_SESSION["NIPP"];
     $result_login = mysqli_query($conn, "SELECT nama FROM user WHERE NIPP = '$login_as'");
@@ -28,7 +31,7 @@
     function onClick($result)
     {
     if (mysqli_num_rows($result) > 0) {
-        header("Location: ./index.php");
+        header("Location: ./login.php");
     } else {
         header("Location: ./homepage.php");
     }
@@ -97,21 +100,21 @@
                     <h4>Pilih Kereta</h4>
                     <div class="card shadow bg-body-tertiary rounded" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 1)) ,url(https://swamediainc.storage.googleapis.com/swa.co.id/wp-content/uploads/2020/05/12191311/Kereta-APi.jpg);">
                         <div class="card-body" style="justify-content: center; align-items: center; display: flex;">
-                            <a href="./JD/JDTKS.php">
+                            <a href="./JADWALDINASAN.php">
                                 <button type="button" class="btn btn-lg" style="color: white;"><strong>TAKSAKA</strong></button></a>
                         </div>
                     </div>
                     <div class="b-example-divider-main"></div>
                     <div class="card shadow bg-body-tertiary rounded" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 1)) ,url(https://swamediainc.storage.googleapis.com/swa.co.id/wp-content/uploads/2020/05/12191311/Kereta-APi.jpg);">
                         <div class="card-body" style="justify-content: center; align-items: center; display: flex;">
-                            <a href="./JD/JDAGLW.php">
+                            <a href="./jadwaldinasan.php">
                             <button type="button" class="btn btn-lg" style="color: white;"><strong>ARGO LAWU</strong></button></a>
                         </div>
                     </div>
                     <div class="b-example-divider-main"></div>
                     <div class="card shadow bg-body-tertiary rounded" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 1)) ,url(https://swamediainc.storage.googleapis.com/swa.co.id/wp-content/uploads/2020/05/12191311/Kereta-APi.jpg);">
                         <div class="card-body" style="justify-content: center; align-items: center; display: flex;">
-                            <a href="./JD/JDADWP.php">
+                            <a href="./JADWALDINASAN.php">
                                 <button type="button" class="btn btn-lg" style="color: white;"><strong>ARGO DWIPANGGA</strong></button></a>
                         </div>
                     </div>
