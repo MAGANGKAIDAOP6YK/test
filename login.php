@@ -30,7 +30,6 @@ if (isset($_POST["login"])) {
             $_SESSION["nama"] = $data["nama"];
             $_SESSION["dinasan"] = $data["dinasan"];
             $_SESSION["kedudukan"] = $data["kedudukan"];
-            $_SESSION["namaka"] = $data["namaka"];
             header("Location: homepage.php");
             if (isset($_POST["check"])) {
                 setcookie("NIPP", $data["NIPP"], time() + 86400, "/");

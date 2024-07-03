@@ -37,10 +37,6 @@
     }
     mysqli_close($conn);
     }
-
-    // $_SESSION['stanformasi'] = $_POST['stanformasi'];
-    // header("Location: SCANQR.php");
-    // exit;
 ?>
 
 <!DOCTYPE html>

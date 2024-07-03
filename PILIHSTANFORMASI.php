@@ -20,38 +20,12 @@
 
     // Tutup koneksi database
     
+
+    
     if (isset($_SESSION["login"])) {
-        $login_as = $_SESSION["NIPP"];
-        $result_login = mysqli_query($conn, "SELECT nama, dinasan, namaka FROM user WHERE NIPP = '$login_as'");
-        $data_login = mysqli_fetch_assoc($result_login);
-
-        $_SESSION["nama"] = $data_login["nama"];
-        $_SESSION["dinasan"] = $data_login["dinasan"];
-        $_SESSION["namaka"] = $data_login["namaka"];
-    }
-
-    if (isset($_SESSION["login"]) && isset($_SESSION["NIPP"])) {
-        $login_as = $_SESSION["NIPP"];
-    
-        // Pastikan koneksi terbuka
-        if ($conn) {
-            $result_login = mysqli_query($conn, "SELECT stanformasi FROM pilih_jadwal WHERE NIPP = '$login_as'");
-    
-            // Periksa hasil kueri
-            if ($result_login) {
-                $data_login = mysqli_fetch_assoc($result_login);
-    
-                if ($data_login !== null && isset($data_login["stanformasi"])) {
-                    $_SESSION["stanformasi"] = $data_login["stanformasi"];
-                } else {
-                    // Penanganan jika data kosong atau 'stanformasi' tidak ada
-                }
-            } else {
-                // Penanganan jika terjadi kesalahan pada kueri
-            }
-        } else {
-            // Penanganan jika koneksi gagal
-    }
+    $login_as = $_SESSION["NIPP"];
+    $result_login = mysqli_query($conn, "SELECT nama FROM user WHERE NIPP = '$login_as'");
+    $data_login = mysqli_fetch_assoc($result_login);
     }
 
     function onClick($result)
@@ -63,7 +37,6 @@
     }
     mysqli_close($conn);
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,9 +111,7 @@
                     <div class="b-example-divider-main"></div>
                     <div class="card shadow bg-body-tertiary rounded" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 1)) ,url(https://swamediainc.storage.googleapis.com/swa.co.id/wp-content/uploads/2020/05/12191311/Kereta-APi.jpg);">
                         <div class="card-body" style="justify-content: center; align-items: center; display: flex;">
-                            <button type="button" class="btn btn-lg" style="color: white;"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalEksekutif1Taksaka67"><strong>EKSEKUTIF 1</strong></button>
+                            <button type="button" class="btn btn-lg" style="color: white;"><strong>EKSEKUTIF 1</strong></button>
                         </div>
                     </div>
                     <div class="b-example-divider-main"></div>
@@ -205,7 +176,6 @@
                 </div>
                 <div class="modal-footer justify-content-around">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <!-- <a href="./SCANQR.php?stanformasi=Luxury"> -->
                     <a href="./SCANQR.php">
                         <button type="button" class="btn btn-primary" onclick="saveData()">Mulai</button></a>
                         <script>
@@ -219,38 +189,6 @@
                                 }
                             };
                             var data = "stanformasi=Luxury";
-                            xhr.send(data);
-                        }
-                        </script>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalEksekutif1Taksaka67" tabindex="-1" aria-labelledby="modalEksekutif1Taksaka67Label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 shadow">
-                <div class="modal-body p-4 text-center border-bottom-2">
-                    <h5 class="mb-0">Ingin Memulai Scan Stanformasi Eksekutif 1 Di Kereta Taksaka(67)?</h5>
-                    <div class="b-example-divider-main"></div>
-                    <p class="mb-0">Stanformasi yang dipilih tidak dapat diubah!</p>
-                </div>
-                <div class="modal-footer justify-content-around">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <!-- <a href="./SCANQR.php?stanformasi=Luxury"> -->
-                    <a href="./SCANQR.php">
-                        <button type="button" class="btn btn-primary" onclick="EKS1()">Mulai</button></a>
-                        <script>
-                        function EKS1() {
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('POST', './config/insert.php', true);
-                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState == 4 && xhr.status == 200) {
-                                    alert(xhr.responseText);
-                                }
-                            };
-                            var data = "stanformasi=Eksekutif1";
                             xhr.send(data);
                         }
                         </script>
